@@ -12,4 +12,6 @@ SHOULD: Als Tester:in möchte ich mir zugeordnete Testfälle mit einem Ergebnis 
 COULD: Als Tester:in möchte ich einen Überblick über mir zugewiesene Testfälle haben.
 
 COULD: Als Testmanager:in möchte ich einen Überblick über den Status aller Testdurchführungen haben.
+
+
 ![Screenshot 2024-08-04 190013](https://github.com/user-attachments/assets/ad60ab66-dcc5-4c08-9d1d-05c790218ef0)
