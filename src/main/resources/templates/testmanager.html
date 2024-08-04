@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Testmanager</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+        .table-container {
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .select2-container .select2-selection--single {
+            height: 38px;
+            line-height: 38px;
+        }
+        .select2-container .select2-selection__rendered {
+            line-height: 36px;
+        }
+        .select2-container .select2-selection__arrow {
+            height: 36px;
+        }
+        .form-control, .btn {
+            max-width: 100%;
+        }
+        .select2-dropdown {
+            box-sizing: border-box;
+        }
+        .select2-results__option {
+            white-space: nowrap;
+            height: 38px;  /* Ensuring consistent height */
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Testmanager</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/status">Status</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Abmelden</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="text-center">Alle Tests</h2>
+        <div class="table-container">
+            <table class="table table-bordered table-striped table-responsive-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Testfall</th>
+                        <th>Testergebnis</th>
+                        <th>Status</th>
+                        <th>Zugewiesener Benutzer</th>
+                        <th>Benutzer zuweisen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="test : ${tests}">
+                        <td th:text="${test.id}"></td>
+                        <td th:text="${test.question}"></td>
+                        <td th:text="${test.answer}"></td>
+                        <td th:text="${test.status ? 'Erledigt' : 'Offen'}"></td>
+                        <td th:text="${test.user != null ? test.user.username : 'Kein Benutzer zugewiesen'}"></td>
+                        <td>
+                            <form th:action="@{/assignUser}" method="post">
+                                <input type="hidden" th:name="testId" th:value="${test.id}" />
+                                <div class="form-group mb-0">
+                                    <select class="form-control user-select" name="userId" required>
+                                        <option value="" disabled selected>Benutzer auswählen</option>
+                                        <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm mt-2">Zuweisen</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.user-select').select2({
+                placeholder: "Benutzer auswählen",
+                allowClear: true,
+                width: '100%'  // Ensuring the dropdown takes full width
+            });
+        });
+    </script>
+</body>
+</html>

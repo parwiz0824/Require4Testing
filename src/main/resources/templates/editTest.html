@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Antwort Bearbeiten</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e9e9e9;
+        }
+
+        .edit-form {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .edit-form h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/tester">Tester</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Navigationsmenü umschalten">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/testsByTester">Testfälle</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="edit-form">
+            <h3>Testfälle können mit einem Ergebnis versehen werden</h3>
+            <br>
+            <form th:action="@{/updateTestAnswer}" method="post">
+                <input type="hidden" name="testId" th:value="${test.id}" />
+                <div class="form-group">
+                    <div class="d-flex">
+
+                        <label for="question"><strong>Testfall: </strong></label>
+                        <p id="question" th:text="${test.question}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="answer">Testergebnis:</label>
+                    <textarea class="form-control" id="answer" name="answer" rows="4"
+                        th:text="${test.answer}"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">senden</button>
+                <a href="#" th:href="@{/testsByTester}" class="btn btn-secondary btn-back">Zurück</a>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Tester Seite</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e9e9e9;
+        }
+
+        .test-box {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+
+        .test-box h2 {
+            margin-top: 0;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .status-label {
+            color: black;
+            /* Color for the "Status:" label */
+        }
+
+        .status-text.beantwortet {
+            color: green;
+            /* Color for "Beantwortet" */
+        }
+
+        .status-text.nicht-beantwortet {
+            color: red;
+            /* Color for "Nicht Beantwortet" */
+        }
+
+        .btn-disabled {
+            background-color: #6c757d;
+            /* Bootstrap secondary button color */
+            border-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .btn-disabled:hover {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/tester">Tester</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Navigationsmenü umschalten">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h1 class="mb-4">Überblick über die zugewiesenen Testfälle</h1>
+        <div class="row">
+            <div th:each="test : ${tests}" class="col-12">
+                <div class="test-box">
+                    <h3 th:text="'Testfall: ' + ${test.question}"></h3>
+                    <p class="status">
+                        <span class="status-label">Status: </span>
+                        <span th:text="${test.status} ? 'Beantwortet' : 'Nicht Beantwortet'"
+                            th:classappend="${test.status} ? 'status-text beantwortet' : 'status-text nicht-beantwortet'"></span>
+                    </p>
+                    <p>
+                        <strong>Zugewiesener Benutzer: </strong>
+                        <span th:text="${test.user.username}"></span>
+                    </p>
+                    <form th:action="@{/editTest}" method="get">
+                        <input type="hidden" name="testId" th:value="${test.id}" />
+                        <button type="submit" class="btn btn-primary"
+                            th:classappend="${test.status} ? 'btn-disabled' : ''"
+                            th:disabled="${test.status} ? 'true' : 'false'">
+                            <span th:text="${test.status} ? 'Erledigt' : 'Testergebnis erfassen'"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Status Übersicht</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+        .table-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Navigationsmenü umschalten">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/testmanager">Testmanager</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Abmelden</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="text-center">Tests nach Status filtern</h2>
+
+        <form method="get" action="/status">
+            <div class="form-group">
+                <label for="statusFilter">Status:</label>
+                <select id="statusFilter" name="statusFilter" class="form-control">
+                    <option value="" th:selected="${statusFilter == null}">Alle</option>
+                    <option value="true" th:selected="${statusFilter != null and statusFilter}">Erledigt</option>
+                    <option value="false" th:selected="${statusFilter != null and !statusFilter}">offen</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filtern</button>
+        </form>
+
+        <div class="table-container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Testfall</th>
+                        <th>Testergebnis</th>
+                        <th>Status</th>
+                        <th>Zugewiesener Benutzer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="test : ${tests}">
+                        <td th:text="${test.id}"></td>
+                        <td th:text="${test.question}"></td>
+                        <td th:text="${test.answer}"></td>
+                        <td>
+                            <span th:text="${test.status ? 'Erledigt' : 'Offen'}"
+                                  th:classappend="${test.status ? 'text-success' : 'text-danger'}">
+                            </span>
+                        </td>
+                        <td th:text="${test.user != null ? test.user.username : 'Kein Benutzer zugewiesen'}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
